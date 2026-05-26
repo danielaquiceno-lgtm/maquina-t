@@ -1,3 +1,4 @@
+
 import streamlit as st
 
 # ─── CONFIGURACIÓN DE PÁGINA ───────────────────────────────────────────────
@@ -75,7 +76,7 @@ with col_t:
     st.markdown("### ✅ Imágenes que SÍ son T")
     cols = st.columns(3)
     for i, img in enumerate(imagenes_T):
-        with cols[i]:
+        with cols[i % 3]:
             st.markdown(f"**{img['nombre']}**")
             st.markdown(mostrar_grid(img["grid"], es_T=True), unsafe_allow_html=True)
 
@@ -83,7 +84,7 @@ with col_no:
     st.markdown("### ❌ Imágenes que NO son T")
     cols = st.columns(3)
     for i, img in enumerate(imagenes_noT):
-        with cols[i]:
+        with cols[i % 3]:
             st.markdown(f"**{img['nombre']}**")
             st.markdown(mostrar_grid(img["grid"], es_T=False), unsafe_allow_html=True)
 
@@ -167,15 +168,15 @@ st.divider()
 # ─── SECCIÓN 5: MARCADOR ──────────────────────────────────────────────────
 st.markdown("## 🏆 Marcador: ¿Qué tan bien están calibrados tus pesos?")
 
-t_correctas  = sum(1 for img in imagenes_T   if calcular_puntaje(img["grid"], pesos) >= umbral)
+t_correctas   = sum(1 for img in imagenes_T   if calcular_puntaje(img["grid"], pesos) >= umbral)
 not_correctas = sum(1 for img in imagenes_noT if calcular_puntaje(img["grid"], pesos) <  umbral)
 total_correctas = t_correctas + not_correctas
 total = len(imagenes_T) + len(imagenes_noT)
 
 c1, c2, c3 = st.columns(3)
-c1.metric("✅ T reconocidas correctamente",    f"{t_correctas} / {len(imagenes_T)}")
-c2.metric("❌ No-T rechazadas correctamente",  f"{not_correctas} / {len(imagenes_noT)}")
-c3.metric("🎀 Precisión total",                f"{total_correctas} / {total}")
+c1.metric("✅ T reconocidas correctamente",   f"{t_correctas} / {len(imagenes_T)}")
+c2.metric("❌ No-T rechazadas correctamente", f"{not_correctas} / {len(imagenes_noT)}")
+c3.metric("🎀 Precisión total",               f"{total_correctas} / {total}")
 
 if total_correctas == total:
     st.success("🏆 ¡Perfecto! Tus pesos clasifican correctamente todas las imágenes.")
