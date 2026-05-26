@@ -180,5 +180,17 @@ st.markdown("## 🏆 Marcador: ¿Qué tan bien están calibrados tus pesos?")
 t_correctas   = sum(1 for img in imagenes_T   if calcular_puntaje(img["grid"], pesos) >= umbral)
 not_correctas = sum(1 for img in imagenes_noT if calcular_puntaje(img["grid"], pesos) <  umbral)
 total_correctas = t_correctas + not_correctas
-total = len(imagenes_T) +
+total = len(imagenes_T) + len(imagenes_noT)
+
+c1, c2, c3 = st.columns(3)
+c1.metric("✅ T reconocidas correctamente",   f"{t_correctas} / {len(imagenes_T)}")
+c2.metric("❌ No-T rechazadas correctamente", f"{not_correctas} / {len(imagenes_noT)}")
+c3.metric("🎀 Precisión total",               f"{total_correctas} / {total}")
+
+if total_correctas == total:
+    st.success("🏆 ¡Perfecto! Tus pesos clasifican correctamente todas las imágenes.")
+elif total_correctas >= total * 0.75:
+    st.warning("🌸 ¡Casi! Ajusta un poco más los pesos para mejorar la precisión.")
+else:
+    st.error("💪 Sigue intentando, mueve los pesos y observa cómo cambian los resultados.")
 
