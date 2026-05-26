@@ -1,4 +1,3 @@
-
 import streamlit as st
 
 # ─── CONFIGURACIÓN DE PÁGINA ───────────────────────────────────────────────
@@ -26,18 +25,18 @@ st.markdown("""
 
 # ─── DATOS ─────────────────────────────────────────────────────────────────
 imagenes_T = [
-    {"nombre": "T clásica",    "grid": [[1,1,1],[0,1,0],[0,1,0]]},
-    {"nombre": "T simétrica",  "grid": [[1,1,1],[0,1,0],[0,1,0]]},
-    {"nombre": "T completa",   "grid": [[1,1,1],[1,1,1],[0,1,0]]},
+    {"nombre": "T clásica",  "grid": [[1,1,1],[0,1,0],[0,1,0]]},
+    {"nombre": "T ancha",    "grid": [[1,1,1],[0,1,0],[0,1,0]]},
+    {"nombre": "T con base", "grid": [[1,1,1],[0,1,0],[0,1,0]]},
 ]
 
 imagenes_noT = [
-    {"nombre": "Cruz (+)",   "grid": [[0,1,0],[1,1,1],[0,1,0]]},
-    {"nombre": "Diagonal",   "grid": [[1,0,0],[0,1,0],[0,0,1]]},
-    {"nombre": "L",          "grid": [[1,0,0],[1,0,0],[1,1,1]]},
-    {"nombre": "Cuadro",     "grid": [[1,1,1],[1,1,1],[1,1,1]]},
-    {"nombre": "Esquinas",   "grid": [[1,0,1],[0,0,0],[1,0,1]]},
-    {"nombre": "Vacío",      "grid": [[0,0,0],[0,0,0],[0,0,0]]},
+    {"nombre": "Cruz (+)",  "grid": [[0,1,0],[1,1,1],[0,1,0]]},
+    {"nombre": "Diagonal",  "grid": [[1,0,0],[0,1,0],[0,0,1]]},
+    {"nombre": "L",         "grid": [[1,0,0],[1,0,0],[1,1,1]]},
+    {"nombre": "Cuadro",    "grid": [[1,1,1],[1,1,1],[1,1,1]]},
+    {"nombre": "Esquinas",  "grid": [[1,0,1],[0,0,0],[1,0,1]]},
+    {"nombre": "Vacío",     "grid": [[0,0,0],[0,0,0],[0,0,0]]},
 ]
 
 # ─── FUNCIÓN DE PUNTUACIÓN ─────────────────────────────────────────────────
@@ -112,9 +111,9 @@ col1, col2, col3 = st.columns(3)
 columnas = [col1, col2, col3]
 etiquetas = ["Fila 1", "Fila 2", "Fila 3"]
 valores_default = [
-    [2.0, 2.0, 2.0],
-    [-1.0, 3.0, -1.0],
-    [-1.0, 3.0, -1.0],
+    [2.0, -1.0, -1.0],
+    [2.0,  3.0,  3.0],
+    [2.0, -1.0, -1.0],
 ]
 
 for j, col in enumerate(columnas):
@@ -184,3 +183,4 @@ elif total_correctas >= total * 0.75:
     st.warning("🌸 ¡Casi! Ajusta un poco más los pesos para mejorar la precisión.")
 else:
     st.error("💪 Sigue intentando, mueve los pesos y observa cómo cambian los resultados.")
+
