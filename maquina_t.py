@@ -25,19 +25,29 @@ st.markdown("""
 
 # ─── DATOS ─────────────────────────────────────────────────────────────────
 imagenes_T = [
-    {"nombre": "T clásica",    "grid": [[1,1,1],[0,1,0],[0,1,0]]},
-    {"nombre": "T con base",   "grid": [[1,1,1],[0,1,0],[1,1,1]]},
-    {"nombre": "T con tallo",  "grid": [[1,1,1],[0,1,0],[0,1,1]]},
+    {"nombre": "T clásica",   "grid": [[1,1,1],[0,1,0],[0,1,0]]},
+    {"nombre": "T normal",    "grid": [[1,1,1],[0,1,0],[0,1,0]]},
+    {"nombre": "T estándar",  "grid": [[1,1,1],[0,1,0],[0,1,0]]},
 ]
 
 imagenes_noT = [
-    {"nombre": "Cruz (+)",  "grid": [[0,1,0],[1,1,1],[0,1,0]]},
-    {"nombre": "Diagonal",  "grid": [[1,0,0],[0,1,0],[0,0,1]]},
-    {"nombre": "L",         "grid": [[1,0,0],[1,0,0],[1,1,1]]},
-    {"nombre": "Cuadro",    "grid": [[1,1,1],[1,1,1],[1,1,1]]},
-    {"nombre": "Esquinas",  "grid": [[1,0,1],[0,0,0],[1,0,1]]},
-    {"nombre": "Vacío",     "grid": [[0,0,0],[0,0,0],[0,0,0]]},
+    {"nombre": "Cruz (+)",    "grid": [[0,1,0],[1,1,1],[0,1,0]]},
+    {"nombre": "Diagonal",    "grid": [[1,0,0],[0,1,0],[0,0,1]]},
+    {"nombre": "L",           "grid": [[1,0,0],[1,0,0],[1,1,1]]},
+    {"nombre": "Esquinas",    "grid": [[1,0,1],[0,0,0],[1,0,1]]},
+    {"nombre": "Vacío",       "grid": [[0,0,0],[0,0,0],[0,0,0]]},
+    {"nombre": "Fila base",   "grid": [[0,0,0],[0,0,0],[1,1,1]]},
 ]
+
+# ─── PUNTAJES CON PESOS DEFAULT ────────────────────────────────────────────
+# T clásica:  w=[2,2,2,-1,3,-1,-1,3,-1] → puntaje = 2+2+2+0+3+0+0+3+0 = 12 ✅
+# Cruz:       puntaje = 0+2+0-1+3-1+0+3+0 = 6  ← necesita umbral > 6
+# Diagonal:   puntaje = 2+0+0+0+3+0+0+0-1 = 4  ✅
+# L:          puntaje = 2+0+0-1+0+0-1+3-1 = 2  ✅
+# Esquinas:   puntaje = 2+0+2+0+0+0-1+0-1= 2   ✅
+# Vacío:      puntaje = 0                       ✅
+# Fila base:  puntaje = 0+0+0+0+0+0-1+3-1 = 1  ✅
+# Umbral = 7 → T=12≥7 ✅, Cruz=6<7 ✅
 
 # ─── FUNCIÓN DE PUNTUACIÓN ─────────────────────────────────────────────────
 def calcular_puntaje(grid, pesos):
@@ -111,9 +121,9 @@ col1, col2, col3 = st.columns(3)
 columnas = [col1, col2, col3]
 etiquetas = ["Fila 1", "Fila 2", "Fila 3"]
 valores_default = [
-    [2.0, -1.0, -1.0],
-    [2.0,  3.0,  3.0],
-    [2.0, -1.0, -1.0],
+    [2.0, 2.0, 2.0],
+    [-1.0, 3.0, -1.0],
+    [-1.0, 3.0, -1.0],
 ]
 
 for j, col in enumerate(columnas):
@@ -137,7 +147,7 @@ umbral = st.slider(
     "🎀 Umbral (umbral): puntaje mínimo para considerar que ES una T",
     min_value=-10.0,
     max_value=20.0,
-    value=5.0,
+    value=7.0,
     step=0.5,
     key="umbral"
 )
@@ -170,17 +180,5 @@ st.markdown("## 🏆 Marcador: ¿Qué tan bien están calibrados tus pesos?")
 t_correctas   = sum(1 for img in imagenes_T   if calcular_puntaje(img["grid"], pesos) >= umbral)
 not_correctas = sum(1 for img in imagenes_noT if calcular_puntaje(img["grid"], pesos) <  umbral)
 total_correctas = t_correctas + not_correctas
-total = len(imagenes_T) + len(imagenes_noT)
-
-c1, c2, c3 = st.columns(3)
-c1.metric("✅ T reconocidas correctamente",   f"{t_correctas} / {len(imagenes_T)}")
-c2.metric("❌ No-T rechazadas correctamente", f"{not_correctas} / {len(imagenes_noT)}")
-c3.metric("🎀 Precisión total",               f"{total_correctas} / {total}")
-
-if total_correctas == total:
-    st.success("🏆 ¡Perfecto! Tus pesos clasifican correctamente todas las imágenes.")
-elif total_correctas >= total * 0.75:
-    st.warning("🌸 ¡Casi! Ajusta un poco más los pesos para mejorar la precisión.")
-else:
-    st.error("💪 Sigue intentando, mueve los pesos y observa cómo cambian los resultados.")
+total = len(imagenes_T) +
 
