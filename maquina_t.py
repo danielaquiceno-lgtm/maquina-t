@@ -25,9 +25,9 @@ st.markdown("""
 
 # ─── DATOS ─────────────────────────────────────────────────────────────────
 imagenes_T = [
-    {"nombre": "T clásica",  "grid": [[1,1,1],[0,1,0],[0,1,0]]},
-    {"nombre": "T ancha",    "grid": [[1,1,1],[0,1,0],[0,1,0]]},
-    {"nombre": "T con base", "grid": [[1,1,1],[0,1,0],[0,1,0]]},
+    {"nombre": "T clásica",    "grid": [[1,1,1],[0,1,0],[0,1,0]]},
+    {"nombre": "T con base",   "grid": [[1,1,1],[0,1,0],[1,1,1]]},
+    {"nombre": "T con tallo",  "grid": [[1,1,1],[0,1,0],[0,1,1]]},
 ]
 
 imagenes_noT = [
